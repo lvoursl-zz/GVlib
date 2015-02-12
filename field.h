@@ -7,8 +7,11 @@ public:
 	Field();
 
 	void clearField();
-	void drawLine(int x0, int y0, int x1, int y1);
 	void drawField();
+	void drawLine(int x0, int y0, int x1, int y1);
+	void drawTriangle(int x0, int y0, int x1, int y1, int x2, int y2, bool filled);
+
+	void clearScreen(); // эта функция должна быть в классе application
 
 	~Field();
 
@@ -16,5 +19,4 @@ private:
 	int width;
 	int height;
 	std::vector< std::vector<int> > data;
-	//int data[][];
 };
