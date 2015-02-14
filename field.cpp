@@ -93,14 +93,47 @@ void Field::drawTriangle(int x0, int y0, int x1, int y1, int x2, int y2, bool fi
 	int a = sqrt(pow(x0 - x1, 2) + pow(y0 - y1, 2)); 
 	int b = sqrt(pow(x0 - x2, 2) + pow(y0 - y2, 2)); 
 	int c = sqrt(pow(x1 - x2, 2) + pow(y1 - y2, 2)); 
-//std::cout << a << b << c;
+
 	if ((a + b >= c) && (a + c >= b) && (c + b >= a)) {
 		drawLine(x0, y0, x1, y1);
 		drawLine(x0, y0, x2, y2);
 		drawLine(x1, y1, x2, y2);
-	
 
+		/* если треугольник закрашен, то используем бароцентрический алгоритм для отрисовки*/		
+		if (filled) {
+			int xMax = std::max(x0, x1);
+			xMax = std::max(xMax, x2);
+
+			int xMin = std::min(x0, x1);
+			xMin = std::min(xMin, x2);
+
+			int yMax = std::max(y0, y1);
+			yMax = std::max(yMax, y2);
+
+			int yMin = std::min(y0, y1);
+			yMin = std::min(yMin, y2);
+
+			for (int x = xMin; x < xMax; x++) {
+				for (int y = yMin; y < yMax; y++) {
+					bool res = pointInTriangle(x0, y0, x1, y1, x2, y2, x, y);
+					if (res) data[y][x] = 1;
+				}
+			}
+
+
+		}
 	}
+}
+
+bool Field::pointInTriangle(int x0, int y0, int x1, int y1, 
+							int x2, int y2, int pointX, int pointY) {
+
+	double denominator = ((y1 - y2)*(x0 - x2) + (x2 - x1)*(y0 - y2));
+	double a = ((y1 - y2)*(pointX - x2) + (x2 - x1)*(pointY - y2)) / denominator;
+	double b = ((y2 - y0)*(pointX - x2) + (x0 - x2)*(pointY - y2)) / denominator;
+	double c = 1 - a - b;
+	 
+	 return ((0 <= a) && (a <= 1) && (0 <= b) && (b <= 1) && (0 <= c) && (c <= 1));
 }
 
 void Field::drawRect(int x0, int y0, int x1, int y1) { 
