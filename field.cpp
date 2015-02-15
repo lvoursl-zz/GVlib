@@ -146,3 +146,19 @@ void Field::drawRect(int x0, int y0, int x1, int y1) {
 		drawLine(x0, y, x1, y);
 	}
 }
+
+void Field::drawCircle(int x0, int y0, int radius) {
+	if ((width > x0 >= 0) && (height > y0 >= 0) 
+		&& (x0 - radius >= 0) && (y0 - radius >= 0)
+		&& (x0 + radius <= width) && (y0 + radius <= height)) {
+
+			for (int x = x0 - radius; x < x0 + radius; x++) {
+				for (int y = y0 - radius; y < y0 + radius; y++) {
+					if ((x0 - x)*(x0 - x) + (y0 - y)*(y0 - y) < (radius * radius)) data[y][x] = 1;
+				}
+			}			
+
+	} else {
+		std::cout << "cant draw this circle. coordinates are out of range";
+	}
+}
