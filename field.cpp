@@ -3,9 +3,10 @@
 #include <iostream>
 #include <algorithm>
 
+
 Field::Field(int w, int h) : width(w), height(h) {
 	for (int i = 0; i < height; ++i) {
-		std::vector<int> row(width);
+		std::vector<char> row(width);
 		data.push_back(row);
 		for (int j = 0; j < width; ++j) {
 			data[i][j] = 0;
@@ -15,7 +16,7 @@ Field::Field(int w, int h) : width(w), height(h) {
 
 Field::Field() : width(35), height(25) {
 	for (int i = 0; i < height; ++i) {
-		std::vector<int> row(width);
+		std::vector<char> row(width);
 		data.push_back(row);
 		for (int j = 0; j < width; ++j) {
 			data[i][j] = 0;	
@@ -46,7 +47,7 @@ void Field::drawField() {
 }
 
 void Field::clearScreen() {
-	for (int i = 0; i < 10; i++) {
+	for (int i = 0; i < height; i++) {
 		std::cout << "\n\n\n\n\n\n\n\n\n\n";
 	}
 }
@@ -160,5 +161,15 @@ void Field::drawCircle(int x0, int y0, int radius) {
 
 	} else {
 		std::cout << "cant draw this circle. coordinates are out of range";
+	}
+}
+
+void Field::drawText(int x0, int y0, std::string text, Colors::Code color) {
+	if (x0 + text.length() <= width) {
+		int textCount = 0;
+		for (int i = x0; i < x0 + text.length(); i++) {
+			data[y0][i] = text.at(textCount);
+			textCount++;
+		}
 	}
 }
