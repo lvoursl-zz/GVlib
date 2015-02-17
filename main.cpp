@@ -6,14 +6,15 @@ int main(int argc, char** argv) {
 	//field.drawCircle(30, 10, 5);
 	//field.drawLine(10, 25, 30, 25);
 	//field.drawTriangle(15, 20, 20, 15, 25, 20, true);
-	field.drawText(5, 20, "privet, what about you?", Colors::FG_RED);
+	field.drawText(7, 20, "i want to kiss you <3 ", Colors::FG_LIGHT_YELLOW);
+	field.drawPixel(20, 21);	
 	field.drawField();
 	// app loop
-	int count = 0;
-	/*while (true) {
+	/*int count = 0;
+	while (true) {
 		count++;
 		field.drawField();
-		if (count == 20) {
+		if (count == 99999999) {
 			field.clearScreen();
 			count = 0;
 		}

@@ -9,12 +9,15 @@ public:
 	Field();
 
 	void clearField();
+	void clearField(int x0, int y0, int x1, int y1);
+
 	void drawField();
 	void drawLine(int x0, int y0, int x1, int y1);
 	void drawTriangle(int x0, int y0, int x1, int y1, int x2, int y2, bool filled);
 	void drawRect(int x0, int y0, int x1, int y1);
 	void drawCircle(int x0, int y0, int radius);
-	void drawText(int x0, int y0, std::string text, Colors::Code color);
+	void drawText(int x0, int y0, std::string text, Colors::Code color = Colors::FG_DEFAULT);
+	void drawPixel(int x0, int y0);
 
 	bool pointInTriangle(int x0, int y0, int x1, int y1, int x2, int y2, int pointX, int pointY);
 	void clearScreen(); 
@@ -24,5 +27,5 @@ public:
 private: 
 	int width;
 	int height;
-	std::vector< std::vector<char> > data;
+	std::vector< std::vector<std::string> > data;
 };

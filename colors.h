@@ -6,7 +6,7 @@ namespace Colors {
 		FG_GREEN = 32, 
 		FG_YELLOW = 33, 
 		FG_BLUE = 34, 
-		G_MAGENTA = 35, 
+		FG_MAGENTA = 35, 
 		FG_CYAN = 36, 
 		FG_LIGHT_GRAY = 37, 
 		FG_DARK_GRAY = 90, 

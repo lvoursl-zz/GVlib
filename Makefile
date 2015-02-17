@@ -1,4 +1,4 @@
 all:
 	clear
-	g++ main.cpp field.cpp -o gl
+	g++ -std=c++11 main.cpp field.cpp -o gl
 	./gl

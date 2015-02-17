@@ -6,20 +6,20 @@
 
 Field::Field(int w, int h) : width(w), height(h) {
 	for (int i = 0; i < height; ++i) {
-		std::vector<char> row(width);
+		std::vector<std::string> row(width);
 		data.push_back(row);
 		for (int j = 0; j < width; ++j) {
-			data[i][j] = 0;
+			data[i][j] = "0";
 		}		
 	}
 }
 
 Field::Field() : width(35), height(25) {
 	for (int i = 0; i < height; ++i) {
-		std::vector<char> row(width);
+		std::vector<std::string> row(width);
 		data.push_back(row);
 		for (int j = 0; j < width; ++j) {
-			data[i][j] = 0;	
+			data[i][j] = "0";	
 		}				
 	}	
 }
@@ -30,7 +30,24 @@ void Field::clearField() {
 	std::cout << this << std::endl;
 	for (int i = 0; i < width; ++i) {
 		for (int j = 0; j < height; ++j) {
-			data[i][j] = 0;
+			data[i][j] = "0";
+		}
+	}
+}
+
+void Field::clearField(int x0, int y0, int x1, int y1) {
+	if ((width > x0 >= 0) && (width > x1 >= 0) 
+		 && (height > y0 >= 0) && (height > y1 >= 0)) { 
+
+		if ((x0 > x1) || (y0 > y1)) {
+		 	std::swap(x0, x1); 
+		 	std::swap(y0, y1);		
+		}
+
+		for (int x = x0; x <= x1; x++) {			
+			for (int y = y0; y <= y1; y++) {
+				data[y][x] = "0";
+			}
 		}
 	}
 }
@@ -39,7 +56,7 @@ void Field::drawField() {
 	for (int i = 0; i < height; ++i) {
 		for (int j = 0; j < width; ++j) {
 			//std::cout << data[i][j] << " ";
-			if (data[i][j] == 0) std::cout << "  ";
+			if (data[i][j] == "0") std::cout << "  ";
 				else std::cout << data[i][j] << " ";
 		}
 		std::cout << std::endl;
@@ -47,9 +64,10 @@ void Field::drawField() {
 }
 
 void Field::clearScreen() {
-	for (int i = 0; i < height; i++) {
-		std::cout << "\n\n\n\n\n\n\n\n\n\n";
+	for (int i = 0; i < pow(height, 3); i++) {
+		std::cout << "\r\r\r\r\r\r\r\r\r\r";
 	}
+	std::cout << "\033[2J\033[1;1H" << "\033[2J\033[1;1H";
 }
 
 
@@ -79,9 +97,9 @@ void Field::drawLine(int x0, int y0, int x1, int y1) {
 	        float t = (x-x0)/(float)(x1-x0);
        		int y = round(y0*(1.-t) + y1*t);	        
 	        if (steep) {
-	            data[x][y] = 1;
+	            data[x][y] = "1";
 	        } else {
-	            data[y][x] = 1;
+	            data[y][x] = "1";
 	        }
 	    }
 
@@ -117,7 +135,7 @@ void Field::drawTriangle(int x0, int y0, int x1, int y1, int x2, int y2, bool fi
 			for (int x = xMin; x < xMax; x++) {
 				for (int y = yMin; y < yMax; y++) {
 					bool res = pointInTriangle(x0, y0, x1, y1, x2, y2, x, y);
-					if (res) data[y][x] = 1;
+					if (res) data[y][x] = "1";
 				}
 			}
 
@@ -155,7 +173,7 @@ void Field::drawCircle(int x0, int y0, int radius) {
 
 			for (int x = x0 - radius; x < x0 + radius; x++) {
 				for (int y = y0 - radius; y < y0 + radius; y++) {
-					if ((x0 - x)*(x0 - x) + (y0 - y)*(y0 - y) < (radius * radius)) data[y][x] = 1;
+					if ((x0 - x)*(x0 - x) + (y0 - y)*(y0 - y) < (radius * radius)) data[y][x] = "1";
 				}
 			}			
 
@@ -168,8 +186,14 @@ void Field::drawText(int x0, int y0, std::string text, Colors::Code color) {
 	if (x0 + text.length() <= width) {
 		int textCount = 0;
 		for (int i = x0; i < x0 + text.length(); i++) {
-			data[y0][i] = text.at(textCount);
+			data[y0][i] = "\033[" + std::to_string(color) + "m" + text.at(textCount) + "\033[m";
 			textCount++;
-		}
+		}		
+	}
+}
+
+void Field::drawPixel(int x0, int y0) {
+	if ((width >= x0 >= 0) && (height >= y0 >= 0)) {
+		data[y0][x0] = (char)254;
 	}
 }
