@@ -10,14 +10,19 @@ int main(int argc, char** argv) {
 	field.drawPixel(20, 21);	
 	field.drawField();
 	// app loop
-	/*int count = 0;
+	double count = 0;
+	double i = 0;
 	while (true) {
-		count++;
-		field.drawField();
-		if (count == 99999999) {
+		count++;		
+		if (count == 10000000) {
+			i++;
 			field.clearScreen();
+			field.drawPixel(i, 21);	
+			field.drawPixel(21, i);
+			field.drawField();			
 			count = 0;
 		}
-	}*/
+
+	}
 	return 0;
 }

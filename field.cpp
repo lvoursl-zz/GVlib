@@ -36,8 +36,8 @@ void Field::clearField() {
 }
 
 void Field::clearField(int x0, int y0, int x1, int y1) {
-	if ((width > x0 >= 0) && (width > x1 >= 0) 
-		 && (height > y0 >= 0) && (height > y1 >= 0)) { 
+	if ((width > x0) && (x0 >= 0) && (width > x1) && (x1 >= 0) 
+		 && (height > y0) && (y0 >= 0) && (height > y1) && (y1 >= 0)) { 
 
 		if ((x0 > x1) || (y0 > y1)) {
 		 	std::swap(x0, x1); 
@@ -55,7 +55,6 @@ void Field::clearField(int x0, int y0, int x1, int y1) {
 void Field::drawField() {
 	for (int i = 0; i < height; ++i) {
 		for (int j = 0; j < width; ++j) {
-			//std::cout << data[i][j] << " ";
 			if (data[i][j] == "0") std::cout << "  ";
 				else std::cout << data[i][j] << " ";
 		}
@@ -64,17 +63,14 @@ void Field::drawField() {
 }
 
 void Field::clearScreen() {
-	for (int i = 0; i < pow(height, 3); i++) {
-		std::cout << "\r\r\r\r\r\r\r\r\r\r";
-	}
-	std::cout << "\033[2J\033[1;1H" << "\033[2J\033[1;1H";
+	system("clear"); // THATS A RIGHT WAY + как-то настроить курсор (insert?)
 }
 
 
 
 void Field::drawLine(int x0, int y0, int x1, int y1) {
-	if ((width > x0 >= 0) && (width > x1 >= 0) 
-		 && (height > y0 >= 0) && (height > y1 >= 0)) {
+	if ((width > x0) && (x0 >= 0) && (width > x1) && (x1 >= 0) 
+		 && (height > y0) && (y0 >= 0) && (height > y1) && (y1 >= 0)) {
 
 		/* для адекватной отрисовки линий, 
 		вытянутых вверх. если рисовать без него, то
@@ -104,42 +100,48 @@ void Field::drawLine(int x0, int y0, int x1, int y1) {
 	    }
 
 	} else {
-		std::cout << "can't draw line (coordinates are out of range)" << std::endl;
+		std::cerr << "can't draw line (coordinates are out of range)" << std::endl;
 	}
 }
 
 void Field::drawTriangle(int x0, int y0, int x1, int y1, int x2, int y2, bool filled) {
-	int a = sqrt(pow(x0 - x1, 2) + pow(y0 - y1, 2)); 
-	int b = sqrt(pow(x0 - x2, 2) + pow(y0 - y2, 2)); 
-	int c = sqrt(pow(x1 - x2, 2) + pow(y1 - y2, 2)); 
+	
+	if ((width > x0) && (x0 >= 0) && (width > x1) && (x1 >= 0) 
+		 && (height > y0) && (y0 >= 0) && (height > y1) && (y1 >= 0)
+		 && (width > x2) && (x2 >= 0) && (height > y2) && (y2 >= 0)) {
 
-	if ((a + b >= c) && (a + c >= b) && (c + b >= a)) {
-		drawLine(x0, y0, x1, y1);
-		drawLine(x0, y0, x2, y2);
-		drawLine(x1, y1, x2, y2);
+		int a = sqrt(pow(x0 - x1, 2) + pow(y0 - y1, 2)); 
+		int b = sqrt(pow(x0 - x2, 2) + pow(y0 - y2, 2)); 
+		int c = sqrt(pow(x1 - x2, 2) + pow(y1 - y2, 2)); 
 
-		/* если треугольник закрашен, то используем бароцентрический алгоритм для отрисовки*/		
-		if (filled) {
-			int xMax = std::max(x0, x1);
-			xMax = std::max(xMax, x2);
+		if ((a + b >= c) && (a + c >= b) && (c + b >= a)) {
+			drawLine(x0, y0, x1, y1);
+			drawLine(x0, y0, x2, y2);
+			drawLine(x1, y1, x2, y2);
 
-			int xMin = std::min(x0, x1);
-			xMin = std::min(xMin, x2);
+			/* если треугольник закрашен, то используем бароцентрический алгоритм для отрисовки*/		
+			if (filled) {
+				int xMax = std::max(x0, x1);
+				xMax = std::max(xMax, x2);
 
-			int yMax = std::max(y0, y1);
-			yMax = std::max(yMax, y2);
+				int xMin = std::min(x0, x1);
+				xMin = std::min(xMin, x2);
 
-			int yMin = std::min(y0, y1);
-			yMin = std::min(yMin, y2);
+				int yMax = std::max(y0, y1);
+				yMax = std::max(yMax, y2);
 
-			for (int x = xMin; x < xMax; x++) {
-				for (int y = yMin; y < yMax; y++) {
-					bool res = pointInTriangle(x0, y0, x1, y1, x2, y2, x, y);
-					if (res) data[y][x] = "1";
+				int yMin = std::min(y0, y1);
+				yMin = std::min(yMin, y2);
+
+				for (int x = xMin; x < xMax; x++) {
+					for (int y = yMin; y < yMax; y++) {
+						bool res = pointInTriangle(x0, y0, x1, y1, x2, y2, x, y);
+						if (res) data[y][x] = "1";
+					}
 				}
+
+
 			}
-
-
 		}
 	}
 }
@@ -152,22 +154,26 @@ bool Field::pointInTriangle(int x0, int y0, int x1, int y1,
 	double b = ((y2 - y0)*(pointX - x2) + (x0 - x2)*(pointY - y2)) / denominator;
 	double c = 1 - a - b;
 	 
-	 return ((0 <= a) && (a <= 1) && (0 <= b) && (b <= 1) && (0 <= c) && (c <= 1));
+	return ((0 <= a) && (a <= 1) && (0 <= b) && (b <= 1) && (0 <= c) && (c <= 1));
 }
 
 void Field::drawRect(int x0, int y0, int x1, int y1) { 
-	if (y1 < y0) {
-		std::swap(y1, y0);
-		std::swap(x1, x0);
-	}
+	if ((width > x0) && (x0 >= 0) && (width > x1) && (x1 >= 0) 
+		 && (height > y0) && (y0 >= 0) && (height > y1) && (y1 >= 0)) {
 
-	for (int y = y0; y < y1; y++) {
-		drawLine(x0, y, x1, y);
+		if (y1 < y0) {
+			std::swap(y1, y0);
+			std::swap(x1, x0);
+		}
+
+		for (int y = y0; y < y1; y++) {
+			drawLine(x0, y, x1, y);
+		}
 	}
 }
 
 void Field::drawCircle(int x0, int y0, int radius) {
-	if ((width > x0 >= 0) && (height > y0 >= 0) 
+	if ((width > x0) && (x0 >= 0) && (height > y0) && (y0 >= 0)
 		&& (x0 - radius >= 0) && (y0 - radius >= 0)
 		&& (x0 + radius <= width) && (y0 + radius <= height)) {
 
@@ -178,12 +184,13 @@ void Field::drawCircle(int x0, int y0, int radius) {
 			}			
 
 	} else {
-		std::cout << "cant draw this circle. coordinates are out of range";
+		std::cerr << "cant draw this circle. coordinates are out of range";
 	}
 }
 
 void Field::drawText(int x0, int y0, std::string text, Colors::Code color) {
-	if (x0 + text.length() <= width) {
+	if ((x0 + text.length() <= width) && (width > x0) && (x0 >= 0) 
+									  && (height > y0) && (y0 >= 0)) {
 		int textCount = 0;
 		for (int i = x0; i < x0 + text.length(); i++) {
 			data[y0][i] = "\033[" + std::to_string(color) + "m" + text.at(textCount) + "\033[m";
@@ -193,7 +200,7 @@ void Field::drawText(int x0, int y0, std::string text, Colors::Code color) {
 }
 
 void Field::drawPixel(int x0, int y0) {
-	if ((width >= x0 >= 0) && (height >= y0 >= 0)) {
+	if ((width > x0) && (x0 >= 0) && (height > y0) && (y0 >= 0)) {
 		data[y0][x0] = (char)254;
 	}
 }
