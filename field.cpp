@@ -199,8 +199,9 @@ void Field::drawText(int x0, int y0, std::string text, Colors::Code color) {
 	}
 }
 
-void Field::drawPixel(int x0, int y0) {
-	if ((width > x0) && (x0 >= 0) && (height > y0) && (y0 >= 0)) {
-		data[y0][x0] = (char)254;
+void Field::drawPixel(Pixel pixel) {
+	if ((width > pixel.getX()) && (pixel.getX() >= 0) && (height > pixel.getY()) && (pixel.getY() >= 0)) {
+		data[pixel.getY()][pixel.getX()] = (char)254;
+		globalShapesVector.push_back(pixel);	
 	}
 }
