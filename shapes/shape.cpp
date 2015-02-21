@@ -12,3 +12,11 @@ int Shape::getId() const {
 void Shape::setId(int id) {
 	this->id = id;
 }
+
+std::string Shape::getType() const {
+	return type;
+}
+
+std::map<std::string, int> Shape::getCoordinates() const {
+	return coordinates;
+}

@@ -1,7 +1,7 @@
-#include "field.h"
 #include <math.h>
 #include <iostream>
 #include <algorithm>
+#include "field.h"
 
 
 Field::Field(int w, int h) : width(w), height(h) {
@@ -25,6 +25,14 @@ Field::Field() : width(35), height(25) {
 }
 
 Field::~Field() { }
+
+int Field::getWidth() const {
+	return width;
+} 
+
+int Field::getHeight() const {
+	return height;
+}
 
 void Field::clearField() {
 	std::cout << this << std::endl;
@@ -68,8 +76,56 @@ void Field::clearScreen() {
 
 
 
-void Field::drawLine(int x0, int y0, int x1, int y1) {
+void Field::drawLine(Line line) {
+	std::map<std::string, int> lineCoordinates = line.getCoordinates();
+
+	int x0 = lineCoordinates.at("x0");
+	int y0 = lineCoordinates.at("y0"); 
+	int x1 = lineCoordinates.at("x1");
+	int y1 = lineCoordinates.at("y1");
+
 	if ((width > x0) && (x0 >= 0) && (width > x1) && (x1 >= 0) 
+		 && (height > y0) && (y0 >= 0) && (height > y1) && (y1 >= 0)) {
+
+		globalShapesVector.push_back(line);	
+
+		/* для адекватной отрисовки линий, 
+		вытянутых вверх. если рисовать без него, то
+		линии получаются с пробелами*/
+		bool steep = false;
+	    if (std::abs(x0-x1)<std::abs(y0-y1)) { 
+	        std::swap(x0, y0);
+	        std::swap(x1, y1);
+	        steep = true;
+	    }
+	    /* отрисовка происходит слева направо, поэтому 
+	    линии с обратными координатами нужно привести к стандатному
+	    для алгоритма виду (х1 > x0) т.е. для отрисовки слева направо*/
+	    if (x0>x1) { 
+	        std::swap(x0, x1);
+	        std::swap(y0, y1);
+	    }
+
+	    for (int x=x0; x<=x1; x++) {
+	        float t = (x-x0)/(float)(x1-x0);
+       		int y = round(y0*(1.-t) + y1*t);	        
+	        if (steep) {
+	            data[x][y] = "1";
+	        } else {
+	            data[y][x] = "1";
+	        }
+	    }
+
+
+
+	} else {
+		std::cerr << "can't draw line (coordinates are out of range)" << std::endl;
+	}
+}
+
+
+void Field::drawLine(int x0, int y0, int x1, int y1) {
+if ((width > x0) && (x0 >= 0) && (width > x1) && (x1 >= 0) 
 		 && (height > y0) && (y0 >= 0) && (height > y1) && (y1 >= 0)) {
 
 		/* для адекватной отрисовки линий, 
@@ -104,7 +160,16 @@ void Field::drawLine(int x0, int y0, int x1, int y1) {
 	}
 }
 
-void Field::drawTriangle(int x0, int y0, int x1, int y1, int x2, int y2, bool filled) {
+void Field::drawTriangle(Triangle triangle) {
+
+	std::map<std::string, int> triangleCoordinates = triangle.getCoordinates();
+
+	int x0 = triangleCoordinates.at("x0");
+	int y0 = triangleCoordinates.at("y0"); 
+	int x1 = triangleCoordinates.at("x1");
+	int y1 = triangleCoordinates.at("y1");
+	int x2 = triangleCoordinates.at("x2");
+	int y2 = triangleCoordinates.at("y2");
 	
 	if ((width > x0) && (x0 >= 0) && (width > x1) && (x1 >= 0) 
 		 && (height > y0) && (y0 >= 0) && (height > y1) && (y1 >= 0)
@@ -120,7 +185,7 @@ void Field::drawTriangle(int x0, int y0, int x1, int y1, int x2, int y2, bool fi
 			drawLine(x1, y1, x2, y2);
 
 			/* если треугольник закрашен, то используем бароцентрический алгоритм для отрисовки*/		
-			if (filled) {
+			if (triangle.isFilled() == true) {
 				int xMax = std::max(x0, x1);
 				xMax = std::max(xMax, x2);
 
@@ -203,5 +268,6 @@ void Field::drawPixel(Pixel pixel) {
 	if ((width > pixel.getX()) && (pixel.getX() >= 0) && (height > pixel.getY()) && (pixel.getY() >= 0)) {
 		data[pixel.getY()][pixel.getX()] = (char)254;
 		globalShapesVector.push_back(pixel);	
+		// pixel.setId(globalShapesVector.length()); << для умного удаления
 	}
 }

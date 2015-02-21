@@ -2,6 +2,8 @@
 #define SHAPE_H_
 
 #include <vector>
+#include <map>
+#include <string>
 
 class Shape {
 
@@ -12,8 +14,13 @@ public:
 	int getId() const;
 	void setId(int id);
 
-private:
+	std::string getType() const;
+	std::map<std::string, int> getCoordinates() const;
+
+protected:
 	int id;
+	std::string type;
+	std::map<std::string, int> coordinates;
 
 };
 

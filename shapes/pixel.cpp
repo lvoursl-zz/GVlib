@@ -5,6 +5,8 @@ Pixel::Pixel(int x, int y) : x(x), y(y) {
 		{ "x", x } ,
 		{ "y", y }
 	};	
+
+	type = "pixel";
 }
 
 Pixel::~Pixel() { }

@@ -1,4 +1,3 @@
-#include <map>
 #include <string>
 #include "shape.h"
 
@@ -16,7 +15,5 @@ public:
 private:
 	int x;
 	int y;
-	std::map<std::string, int> coordinates;
-	std::string value;
 
 };

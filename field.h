@@ -18,8 +18,9 @@ public:
 	void clearField(int x0, int y0, int x1, int y1);
 
 	void drawField();
+	void drawLine(Line line);
 	void drawLine(int x0, int y0, int x1, int y1);
-	void drawTriangle(int x0, int y0, int x1, int y1, int x2, int y2, bool filled);
+	void drawTriangle(Triangle triangle);
 	void drawRect(int x0, int y0, int x1, int y1);
 	void drawCircle(int x0, int y0, int radius);
 	void drawText(int x0, int y0, std::string text, Colors::Code color = Colors::FG_DEFAULT);
@@ -28,11 +29,14 @@ public:
 	bool pointInTriangle(int x0, int y0, int x1, int y1, int x2, int y2, int pointX, int pointY);
 	void clearScreen(); 
 
+	int getWidth() const; 
+	int getHeight() const;
+
 	~Field();
 
 private: 
 	int width;
 	int height;
 	std::vector< std::vector<std::string> > data;
-	std::vector<Shape> globalShapesVector;
+	std::vector<Shape> globalShapesVector; // it should be vector of smart pointers?
 };
