@@ -4,7 +4,7 @@
 class Pixel : public Shape {
 
 public:
-	Pixel(int x, int y);
+	Pixel(int x0, int y0);
 	~Pixel();
 	
 	int getX() const;

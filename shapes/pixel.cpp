@@ -1,9 +1,9 @@
 #include "pixel.h"
 
-Pixel::Pixel(int x, int y) : x(x), y(y) {
+Pixel::Pixel(int x0, int y0) : x(x0), y(y0) {
 	coordinates = {
-		{ "x", x } ,
-		{ "y", y }
+		{ "x0", x0 } ,
+		{ "y0", y0 }
 	};	
 
 	type = "pixel";

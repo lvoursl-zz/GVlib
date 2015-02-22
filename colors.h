@@ -1,3 +1,6 @@
+#ifndef COLORS_H_
+#define COLORS_H_
+
 namespace Colors {
 	enum Code {  
 		FG_DEFAULT = 39, 
@@ -23,3 +26,5 @@ namespace Colors {
 		BG_DEFAULT = 49
 	};
 }
+
+#endif

@@ -1,6 +1,3 @@
-#include <math.h>
-#include <iostream>
-#include <algorithm>
 #include "field.h"
 
 
@@ -34,7 +31,7 @@ int Field::getHeight() const {
 	return height;
 }
 
-void Field::clearField() {
+void Field::clearFieldData() {
 	std::cout << this << std::endl;
 	for (int i = 0; i < width; ++i) {
 		for (int j = 0; j < height; ++j) {
@@ -43,7 +40,7 @@ void Field::clearField() {
 	}
 }
 
-void Field::clearField(int x0, int y0, int x1, int y1) {
+void Field::clearFieldData(int x0, int y0, int x1, int y1) {
 	if ((width > x0) && (x0 >= 0) && (width > x1) && (x1 >= 0) 
 		 && (height > y0) && (y0 >= 0) && (height > y1) && (y1 >= 0)) { 
 
@@ -70,10 +67,14 @@ void Field::drawField() {
 	}
 }
 
-void Field::clearScreen() {
-	system("clear"); // THATS A RIGHT WAY + как-то настроить курсор (insert?)
+void Field::clearFieldOnScreen() {
+	system("clear"); 
 }
 
+void Field::refresh() {
+	system("clear"); 
+	drawField();
+}
 
 
 void Field::drawLine(Line line) {
@@ -200,7 +201,7 @@ void Field::drawTriangle(Triangle triangle) {
 
 				for (int x = xMin; x < xMax; x++) {
 					for (int y = yMin; y < yMax; y++) {
-						bool res = pointInTriangle(x0, y0, x1, y1, x2, y2, x, y);
+						bool res = triangle.pointInTriangle(x, y);
 						if (res) data[y][x] = "1";
 					}
 				}
@@ -211,18 +212,16 @@ void Field::drawTriangle(Triangle triangle) {
 	}
 }
 
-bool Field::pointInTriangle(int x0, int y0, int x1, int y1, 
-							int x2, int y2, int pointX, int pointY) {
 
-	double denominator = ((y1 - y2)*(x0 - x2) + (x2 - x1)*(y0 - y2));
-	double a = ((y1 - y2)*(pointX - x2) + (x2 - x1)*(pointY - y2)) / denominator;
-	double b = ((y2 - y0)*(pointX - x2) + (x0 - x2)*(pointY - y2)) / denominator;
-	double c = 1 - a - b;
-	 
-	return ((0 <= a) && (a <= 1) && (0 <= b) && (b <= 1) && (0 <= c) && (c <= 1));
-}
+void Field::drawRect(Rectangle rectangle) { 
 
-void Field::drawRect(int x0, int y0, int x1, int y1) { 
+	std::map<std::string, int> rectangleCoordinates = rectangle.getCoordinates();
+
+	int x0 = rectangleCoordinates.at("x0");
+	int y0 = rectangleCoordinates.at("y0"); 
+	int x1 = rectangleCoordinates.at("x1");
+	int y1 = rectangleCoordinates.at("y1");
+
 	if ((width > x0) && (x0 >= 0) && (width > x1) && (x1 >= 0) 
 		 && (height > y0) && (y0 >= 0) && (height > y1) && (y1 >= 0)) {
 
@@ -237,7 +236,14 @@ void Field::drawRect(int x0, int y0, int x1, int y1) {
 	}
 }
 
-void Field::drawCircle(int x0, int y0, int radius) {
+void Field::drawCircle(Circle circle) {
+
+	std::map<std::string, int> circleCoordinates = circle.getCoordinates();
+
+	int x0 = circleCoordinates.at("x0");
+	int y0 = circleCoordinates.at("y0"); 
+	int radius = circle.getRadius();
+
 	if ((width > x0) && (x0 >= 0) && (height > y0) && (y0 >= 0)
 		&& (x0 - radius >= 0) && (y0 - radius >= 0)
 		&& (x0 + radius <= width) && (y0 + radius <= height)) {
@@ -253,7 +259,13 @@ void Field::drawCircle(int x0, int y0, int radius) {
 	}
 }
 
-void Field::drawText(int x0, int y0, std::string text, Colors::Code color) {
+void Field::drawText(Text userText) {
+
+	int x0 = userText.getX(); 
+	int y0 = userText.getY();
+	std::string text = userText.getText();
+	Colors::Code color = userText.getColor();
+	
 	if ((x0 + text.length() <= width) && (width > x0) && (x0 >= 0) 
 									  && (height > y0) && (y0 >= 0)) {
 		int textCount = 0;

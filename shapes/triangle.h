@@ -9,6 +9,8 @@ public:
 	bool isFilled() const;
 	bool enableFilled(bool value);
 
+	bool pointInTriangle(int pointX, int pointY);
+
 private:
 	bool filled;
 

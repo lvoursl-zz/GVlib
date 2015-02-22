@@ -1,6 +1,10 @@
 #include <vector>
 #include <string>
+#include <math.h>
+#include <iostream>
+#include <algorithm>
 #include "colors.h"
+#include "text.h"
 #include "shapes/pixel.h"
 #include "shapes/line.h"
 #include "shapes/triangle.h"
@@ -14,20 +18,21 @@ public:
 	Field(int w, int h);
 	Field();
 
-	void clearField();
-	void clearField(int x0, int y0, int x1, int y1);
+	void clearFieldData();
+	void clearFieldData(int x0, int y0, int x1, int y1);
+	void clearFieldOnScreen(); 
+	void refresh();
 
 	void drawField();
 	void drawLine(Line line);
 	void drawLine(int x0, int y0, int x1, int y1);
 	void drawTriangle(Triangle triangle);
-	void drawRect(int x0, int y0, int x1, int y1);
-	void drawCircle(int x0, int y0, int radius);
-	void drawText(int x0, int y0, std::string text, Colors::Code color = Colors::FG_DEFAULT);
+	void drawRect(Rectangle rectangle);
+	void drawCircle(Circle circle);
+	void drawText(Text text);
 	void drawPixel(Pixel pixel);
 
-	bool pointInTriangle(int x0, int y0, int x1, int y1, int x2, int y2, int pointX, int pointY);
-	void clearScreen(); 
+	void deleteShape();
 
 	int getWidth() const; 
 	int getHeight() const;

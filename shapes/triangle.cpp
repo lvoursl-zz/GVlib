@@ -29,3 +29,21 @@ bool Triangle::isFilled() const {
 bool Triangle::enableFilled(bool value) {
 	filled = value;
 }
+
+bool Triangle::pointInTriangle(int pointX, int pointY) {
+	std::map<std::string, int> triangleCoordinates = this->getCoordinates();
+
+	int x0 = triangleCoordinates.at("x0");
+	int y0 = triangleCoordinates.at("y0"); 
+	int x1 = triangleCoordinates.at("x1");
+	int y1 = triangleCoordinates.at("y1");
+	int x2 = triangleCoordinates.at("x2");
+	int y2 = triangleCoordinates.at("y2");
+
+	double denominator = ((y1 - y2)*(x0 - x2) + (x2 - x1)*(y0 - y2));
+	double a = ((y1 - y2)*(pointX - x2) + (x2 - x1)*(pointY - y2)) / denominator;
+	double b = ((y2 - y0)*(pointX - x2) + (x0 - x2)*(pointY - y2)) / denominator;
+	double c = 1 - a - b;
+	 
+	return ((0 <= a) && (a <= 1) && (0 <= b) && (b <= 1) && (0 <= c) && (c <= 1));
+}
