@@ -24,13 +24,13 @@ public:
 	void refresh();
 
 	void drawField();
-	void drawLine(Line line);
+	void drawLine(Line *line);
 	void drawLine(int x0, int y0, int x1, int y1);
-	void drawTriangle(Triangle triangle);
+	void drawTriangle(Triangle *triangle);
 	void drawRect(Rectangle rectangle);
 	void drawCircle(Circle circle);
 	void drawText(Text text);
-	void drawPixel(Pixel pixel);
+	void drawPixel(Pixel *pixel);
 
 	void deleteShape();
 
@@ -43,5 +43,10 @@ private:
 	int width;
 	int height;
 	std::vector< std::vector<std::string> > data;
-	std::vector<Shape> globalShapesVector; // it should be vector of smart pointers?
+
+	std::vector<Pixel *> pixelVector;
+	std::vector<Line *> lineVector;
+	std::vector<Triangle *> triangleVector;
+	std::vector<Rectangle *> rectangleVector;
+	std::vector<Circle *> circleVector;
 };

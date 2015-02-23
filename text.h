@@ -8,9 +8,16 @@ public:
 	~Text();
 
 	int getX() const;
+	void setX(int x);
+
 	int getY() const;
+	void setY(int y);
+
 	std::string getText() const;
+	void setText(std::string text);
+
 	Colors::Code getColor() const;
+	void setColor(Colors::Code color);
 
 private:
 	int x0;

@@ -16,6 +16,7 @@ public:
 
 	std::string getType() const;
 	std::map<std::string, int> getCoordinates() const;
+	void setCoordinates(std::map<std::string, int> coordinates);
 
 protected:
 	int id;

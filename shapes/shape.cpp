@@ -20,3 +20,7 @@ std::string Shape::getType() const {
 std::map<std::string, int> Shape::getCoordinates() const {
 	return coordinates;
 }
+
+void Shape::setCoordinates(std::map<std::string, int> coordinates) {
+	this->coordinates = coordinates;
+}

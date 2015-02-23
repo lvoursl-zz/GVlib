@@ -9,14 +9,30 @@ int Text::getX() const {
 	return x0;
 }
 
+void Text::setX(int x) {
+	this->x0 = x;
+}
+
 int Text::getY() const {
 	return y0;
+}
+
+void Text::setY(int y) {
+	this->y0 = y;
 }
 
 std::string Text::getText() const {
 	return text;
 }
 
+void Text::setText(std::string text) {
+	this->text = text;
+}
+
 Colors::Code Text::getColor() const {
 	return color;
+}
+
+void Text::setColor(Colors::Code color) {
+	this->color = color;
 }

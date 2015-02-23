@@ -32,9 +32,8 @@ int Field::getHeight() const {
 }
 
 void Field::clearFieldData() {
-	std::cout << this << std::endl;
-	for (int i = 0; i < width; ++i) {
-		for (int j = 0; j < height; ++j) {
+	for (int i = 0; i < height; i++) {
+		for (int j = 0; j < width; j++) {
 			data[i][j] = "0";
 		}
 	}
@@ -73,12 +72,26 @@ void Field::clearFieldOnScreen() {
 
 void Field::refresh() {
 	system("clear"); 
+	clearFieldData();
+	
+	for (int i = 0; i < pixelVector.size(); i++) {
+		drawPixel(pixelVector[i]);
+ 	}
+
+ 	for (int i = 0; i < lineVector.size(); i++) {
+ 		drawLine(lineVector[i]);
+ 	}
+ 	
+ 	for (int i = 0; i < triangleVector.size(); i++) {
+ 		drawTriangle(triangleVector[i]);
+ 	}
+
 	drawField();
 }
 
 
-void Field::drawLine(Line line) {
-	std::map<std::string, int> lineCoordinates = line.getCoordinates();
+void Field::drawLine(Line *line) {
+	std::map<std::string, int> lineCoordinates = line->getCoordinates();
 
 	int x0 = lineCoordinates.at("x0");
 	int y0 = lineCoordinates.at("y0"); 
@@ -88,7 +101,16 @@ void Field::drawLine(Line line) {
 	if ((width > x0) && (x0 >= 0) && (width > x1) && (x1 >= 0) 
 		 && (height > y0) && (y0 >= 0) && (height > y1) && (y1 >= 0)) {
 
-		globalShapesVector.push_back(line);	
+
+		bool lineInArray = false;
+		for (int i = 0; i < lineVector.size(); i++) {
+			if (line == lineVector[i]) {
+				 lineInArray = true;
+				 break;
+			}
+		}
+
+		if ( !lineInArray ) lineVector.push_back(line);
 
 		/* для адекватной отрисовки линий, 
 		вытянутых вверх. если рисовать без него, то
@@ -126,7 +148,7 @@ void Field::drawLine(Line line) {
 
 
 void Field::drawLine(int x0, int y0, int x1, int y1) {
-if ((width > x0) && (x0 >= 0) && (width > x1) && (x1 >= 0) 
+	if ((width > x0) && (x0 >= 0) && (width > x1) && (x1 >= 0) 
 		 && (height > y0) && (y0 >= 0) && (height > y1) && (y1 >= 0)) {
 
 		/* для адекватной отрисовки линий, 
@@ -161,9 +183,9 @@ if ((width > x0) && (x0 >= 0) && (width > x1) && (x1 >= 0)
 	}
 }
 
-void Field::drawTriangle(Triangle triangle) {
+void Field::drawTriangle(Triangle *triangle) {
 
-	std::map<std::string, int> triangleCoordinates = triangle.getCoordinates();
+	std::map<std::string, int> triangleCoordinates = triangle->getCoordinates();
 
 	int x0 = triangleCoordinates.at("x0");
 	int y0 = triangleCoordinates.at("y0"); 
@@ -176,6 +198,17 @@ void Field::drawTriangle(Triangle triangle) {
 		 && (height > y0) && (y0 >= 0) && (height > y1) && (y1 >= 0)
 		 && (width > x2) && (x2 >= 0) && (height > y2) && (y2 >= 0)) {
 
+		bool triangleInArray = false;
+		for (int i = 0; i < triangleVector.size(); i++) {
+			if (triangle == triangleVector[i]) {
+				 triangleInArray = true;
+				 break;
+			}
+		}
+
+		if ( !triangleInArray ) triangleVector.push_back(triangle);
+		
+
 		int a = sqrt(pow(x0 - x1, 2) + pow(y0 - y1, 2)); 
 		int b = sqrt(pow(x0 - x2, 2) + pow(y0 - y2, 2)); 
 		int c = sqrt(pow(x1 - x2, 2) + pow(y1 - y2, 2)); 
@@ -186,7 +219,7 @@ void Field::drawTriangle(Triangle triangle) {
 			drawLine(x1, y1, x2, y2);
 
 			/* если треугольник закрашен, то используем бароцентрический алгоритм для отрисовки*/		
-			if (triangle.isFilled() == true) {
+			if (triangle->isFilled() == true) {
 				int xMax = std::max(x0, x1);
 				xMax = std::max(xMax, x2);
 
@@ -201,7 +234,7 @@ void Field::drawTriangle(Triangle triangle) {
 
 				for (int x = xMin; x < xMax; x++) {
 					for (int y = yMin; y < yMax; y++) {
-						bool res = triangle.pointInTriangle(x, y);
+						bool res = triangle->pointInTriangle(x, y);
 						if (res) data[y][x] = "1";
 					}
 				}
@@ -276,10 +309,19 @@ void Field::drawText(Text userText) {
 	}
 }
 
-void Field::drawPixel(Pixel pixel) {
-	if ((width > pixel.getX()) && (pixel.getX() >= 0) && (height > pixel.getY()) && (pixel.getY() >= 0)) {
-		data[pixel.getY()][pixel.getX()] = (char)254;
-		globalShapesVector.push_back(pixel);	
-		// pixel.setId(globalShapesVector.length()); << для умного удаления
+void Field::drawPixel(Pixel *pixel) {
+	if ((width > pixel->getX()) && (pixel->getX() >= 0) && (height > pixel->getY()) && (pixel->getY() >= 0)) {
+		
+		bool pixelInArray = false;
+		for (int i = 0; i < pixelVector.size(); i++) {
+			if (pixel == pixelVector[i]) {
+				 pixelInArray = true;
+				 break;
+			}
+		}
+
+		if ( !pixelInArray ) pixelVector.push_back(pixel);
+
+		data[pixel->getY()][pixel->getX()] = (char)254;
 	}
 }
