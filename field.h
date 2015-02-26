@@ -27,12 +27,16 @@ public:
 	void drawLine(Line *line);
 	void drawLine(int x0, int y0, int x1, int y1);
 	void drawTriangle(Triangle *triangle);
-	void drawRect(Rectangle rectangle);
-	void drawCircle(Circle circle);
+	void drawRectangle(Rectangle *rectangle);
+	void drawCircle(Circle *circle);
 	void drawText(Text text);
 	void drawPixel(Pixel *pixel);
 
-	void deleteShape();
+	void deleteShape(Line *line);
+	void deleteShape(Triangle *triangle);
+	void deleteShape(Rectangle *rectangle);
+	void deleteShape(Circle *circle);
+	void deleteShape(Pixel *pixel);
 
 	int getWidth() const; 
 	int getHeight() const;

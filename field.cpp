@@ -86,6 +86,16 @@ void Field::refresh() {
  		drawTriangle(triangleVector[i]);
  	}
 
+
+ 	for (int i = 0; i < rectangleVector.size(); i++) {
+ 		drawRectangle(rectangleVector[i]);
+ 	}
+
+	for (int i = 0; i < circleVector.size(); i++) {
+ 		drawCircle(circleVector[i]);
+ 	}
+
+
 	drawField();
 }
 
@@ -219,7 +229,7 @@ void Field::drawTriangle(Triangle *triangle) {
 			drawLine(x1, y1, x2, y2);
 
 			/* если треугольник закрашен, то используем бароцентрический алгоритм для отрисовки*/		
-			if (triangle->isFilled() == true) {
+			if (triangle->isFilled() == true) {				
 				int xMax = std::max(x0, x1);
 				xMax = std::max(xMax, x2);
 
@@ -246,9 +256,9 @@ void Field::drawTriangle(Triangle *triangle) {
 }
 
 
-void Field::drawRect(Rectangle rectangle) { 
+void Field::drawRectangle(Rectangle *rectangle) { 
 
-	std::map<std::string, int> rectangleCoordinates = rectangle.getCoordinates();
+	std::map<std::string, int> rectangleCoordinates = rectangle->getCoordinates();
 
 	int x0 = rectangleCoordinates.at("x0");
 	int y0 = rectangleCoordinates.at("y0"); 
@@ -257,6 +267,18 @@ void Field::drawRect(Rectangle rectangle) {
 
 	if ((width > x0) && (x0 >= 0) && (width > x1) && (x1 >= 0) 
 		 && (height > y0) && (y0 >= 0) && (height > y1) && (y1 >= 0)) {
+
+
+		bool rectangleInArray = false;
+		for (int i = 0; i < rectangleVector.size(); i++) {
+			if (rectangle == rectangleVector[i]) {
+				 rectangleInArray = true;
+				 break;
+			}
+		}
+
+		if ( !rectangleInArray ) rectangleVector.push_back(rectangle);
+
 
 		if (y1 < y0) {
 			std::swap(y1, y0);
@@ -269,17 +291,28 @@ void Field::drawRect(Rectangle rectangle) {
 	}
 }
 
-void Field::drawCircle(Circle circle) {
+void Field::drawCircle(Circle *circle) {
 
-	std::map<std::string, int> circleCoordinates = circle.getCoordinates();
+	std::map<std::string, int> circleCoordinates = circle->getCoordinates();
 
 	int x0 = circleCoordinates.at("x0");
 	int y0 = circleCoordinates.at("y0"); 
-	int radius = circle.getRadius();
+	int radius = circle->getRadius();
 
 	if ((width > x0) && (x0 >= 0) && (height > y0) && (y0 >= 0)
 		&& (x0 - radius >= 0) && (y0 - radius >= 0)
 		&& (x0 + radius <= width) && (y0 + radius <= height)) {
+
+
+			bool circleInArray = false;
+			for (int i = 0; i < circleVector.size(); i++) {
+				if (circle == circleVector[i]) {
+					 circleInArray = true;
+					 break;
+				}
+			}
+
+			if ( !circleInArray ) circleVector.push_back(circle);
 
 			for (int x = x0 - radius; x < x0 + radius; x++) {
 				for (int y = y0 - radius; y < y0 + radius; y++) {
@@ -324,4 +357,15 @@ void Field::drawPixel(Pixel *pixel) {
 
 		data[pixel->getY()][pixel->getX()] = (char)254;
 	}
+}
+
+void Field::deleteShape(Line *line) {
+	for (int i = 0; i < lineVector.size(); i++) {
+		if (line == lineVector[i]) {
+			 lineVector.erase(lineVector.begin() + i);
+			 break;
+		}
+	}
+	//delete line;
+	line = NULL;
 }
