@@ -8,12 +8,27 @@ int main(int argc, char** argv) {
 	field.drawTriangle(&t);
 	field.drawPixel(&pix);
 	field.drawLine(&l);
+	Circle c1(10, 10, 5);
+	//field.drawCircle(&c1);
+	std::vector<int> v;
+	v.push_back(5);
+	v.push_back(5321);
+	v.push_back(511);
+	v.push_back(3511);
+	v.push_back(151123);
+	v.push_back(6511);
+	BinaryHeap hp(v);
+	hp.sortHeap();
+	field.drawBinaryHeap(hp);
+	Rectangle r(26, 6, 10, 10);
+	//field.drawRectangle(&r);
+	field.clearFieldOnScreen();
 	field.drawField();
-		
+	field.deleteShape(&l);
 	double count = 0;
 	int i = 0;
 
-	while (true) {
+/*	while (true) {
 		count++;
 		if (count == 100000000) {
 			i++;
@@ -22,10 +37,13 @@ int main(int argc, char** argv) {
 			map["x0"] = i;
 			map["y0"] = i;
 			l.setCoordinates(map);
+			std::map<std::string, int> map = c1.getCoordinates();
+			map["y0"] = map["y0"] + 1;			
+			c1.setCoordinates(map);
 			field.refresh();
 			count = 0;
 		}
-	}
+	}*/
 	 
 /*	Rectangle r(26, 6, 10, 10);
 	field.drawRect(r);

@@ -359,6 +359,12 @@ void Field::drawPixel(Pixel *pixel) {
 	}
 }
 
+void Field::drawBinaryHeap(BinaryHeap binaryHeap) {
+	std::vector<int> binaryHeapData = binaryHeap.getData();
+	
+}
+
+
 void Field::deleteShape(Line *line) {
 	for (int i = 0; i < lineVector.size(); i++) {
 		if (line == lineVector[i]) {
@@ -366,6 +372,6 @@ void Field::deleteShape(Line *line) {
 			 break;
 		}
 	}
-	//delete line;
+	//delete line; << segfault with it!
 	line = NULL;
 }

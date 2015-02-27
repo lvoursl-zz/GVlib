@@ -10,6 +10,7 @@
 #include "shapes/triangle.h"
 #include "shapes/rectangle.h"
 #include "shapes/circle.h"
+#include "data_structures/binary_heap.h"
 
 
 class Field {
@@ -31,6 +32,9 @@ public:
 	void drawCircle(Circle *circle);
 	void drawText(Text text);
 	void drawPixel(Pixel *pixel);
+
+	void drawBinaryHeap(BinaryHeap binaryHeap);
+	void drawArray();
 
 	void deleteShape(Line *line);
 	void deleteShape(Triangle *triangle);
