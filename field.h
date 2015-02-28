@@ -33,7 +33,7 @@ public:
 	void drawText(Text text);
 	void drawPixel(Pixel *pixel);
 
-	void drawBinaryHeap(BinaryHeap binaryHeap);
+	void drawBinaryHeap(BinaryHeap binaryHeap, int x0, int y0);
 	void drawArray();
 
 	void deleteShape(Line *line);

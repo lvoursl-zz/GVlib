@@ -15,6 +15,8 @@ public:
 	void sortHeap();
 
 private:
-	std::vector<int> data; // 2 for access to data[1]
+	std::vector<int> data;
+	int x0;
+	int y0;
 
 };

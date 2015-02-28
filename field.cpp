@@ -359,9 +359,32 @@ void Field::drawPixel(Pixel *pixel) {
 	}
 }
 
-void Field::drawBinaryHeap(BinaryHeap binaryHeap) {
-	std::vector<int> binaryHeapData = binaryHeap.getData();
-	
+void Field::drawBinaryHeap(BinaryHeap binaryHeap, int x0, int y0) {
+	if ((width > x0) && (x0 >= 0) && (height > y0) && (y0 >= 0)) {
+		std::vector<int> binaryHeapData = binaryHeap.getData();
+		
+		int h = 3;
+
+
+
+		int x = x0;
+		int y = y0;
+		int step = 0;
+		int degree = 0;
+		for (int i = 1; i < binaryHeapData.size(); i++) {
+			if (i < pow(2, degree)) { 				
+				x += step;
+				data[y][x] = std::to_string(binaryHeapData[i]);				
+			} else if (i == pow(2, degree)) {				
+				y += 2;				
+				degree++;
+				x -= h;				
+				step = h / degree;
+				data[y][x] = std::to_string(binaryHeapData[i]);
+
+			}
+		}
+	}
 }
 
 
@@ -374,4 +397,48 @@ void Field::deleteShape(Line *line) {
 	}
 	//delete line; << segfault with it!
 	line = NULL;
+}
+
+void Field::deleteShape(Triangle *triangle) {
+	for (int i = 0; i < triangleVector.size(); i++) {
+		if (triangle == triangleVector[i]) {
+			 triangleVector.erase(triangleVector.begin() + i);
+			 break;
+		}
+	}
+	
+	triangle = NULL;
+}
+
+void Field::deleteShape(Rectangle *rectangle) {
+	for (int i = 0; i < rectangleVector.size(); i++) {
+		if (rectangle == rectangleVector[i]) {
+			 rectangleVector.erase(rectangleVector.begin() + i);
+			 break;
+		}
+	}
+	
+	rectangle = NULL;
+}
+
+void Field::deleteShape(Circle *circle) {
+	for (int i = 0; i < circleVector.size(); i++) {
+		if (circle == circleVector[i]) {
+			 circleVector.erase(circleVector.begin() + i);
+			 break;
+		}
+	}
+	
+	circle = NULL;
+}
+
+void Field::deleteShape(Pixel *pixel) {
+	for (int i = 0; i < pixelVector.size(); i++) {
+		if (pixel == pixelVector[i]) {
+			 pixelVector.erase(pixelVector.begin() + i);
+			 break;
+		}
+	}
+	
+	pixel = NULL;
 }

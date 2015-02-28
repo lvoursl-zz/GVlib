@@ -5,26 +5,27 @@ int main(int argc, char** argv) {
 	Pixel pix(5, 5);	
 	Line l(0, 8, 10, 8);
 	Triangle t(15, 20, 20, 15, 25, 20, true);
-	field.drawTriangle(&t);
+	/*field.drawTriangle(&t);
 	field.drawPixel(&pix);
 	field.drawLine(&l);
-	Circle c1(10, 10, 5);
+	Circle c1(10, 10, 5);*/
 	//field.drawCircle(&c1);
 	std::vector<int> v;
+	v.push_back(1);
+	v.push_back(2);
+	v.push_back(3);
+	v.push_back(4);
 	v.push_back(5);
-	v.push_back(5321);
-	v.push_back(511);
-	v.push_back(3511);
-	v.push_back(151123);
-	v.push_back(6511);
+	v.push_back(6);
 	BinaryHeap hp(v);
 	hp.sortHeap();
-	field.drawBinaryHeap(hp);
+	
 	Rectangle r(26, 6, 10, 10);
 	//field.drawRectangle(&r);
-	field.clearFieldOnScreen();
+	
+	field.drawBinaryHeap(hp, 15, 5);
 	field.drawField();
-	field.deleteShape(&l);
+	//field.deleteShape(&l);
 	double count = 0;
 	int i = 0;
 
