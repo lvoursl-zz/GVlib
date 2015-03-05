@@ -1,15 +1,10 @@
 #include "field.h"
 
 int main(int argc, char** argv) {
-	Field field;
+	Field field(50, 30);
 	Pixel pix(5, 5);	
 	Line l(0, 8, 10, 8);
 	Triangle t(15, 20, 20, 15, 25, 20, true);
-	/*field.drawTriangle(&t);
-	field.drawPixel(&pix);
-	field.drawLine(&l);
-	Circle c1(10, 10, 5);*/
-	//field.drawCircle(&c1);
 	std::vector<int> v;
 	v.push_back(1);
 	v.push_back(2);
@@ -17,13 +12,16 @@ int main(int argc, char** argv) {
 	v.push_back(4);
 	v.push_back(5);
 	v.push_back(6);
+	v.push_back(7);
+	v.push_back(8);
+	v.push_back(9);
 	BinaryHeap hp(v);
 	hp.sortHeap();
 	
 	Rectangle r(26, 6, 10, 10);
 	//field.drawRectangle(&r);
 	
-	field.drawBinaryHeap(hp, 15, 5);
+	field.drawBinaryHeap(hp, 34, 15);
 	field.drawField();
 	//field.deleteShape(&l);
 	double count = 0;
