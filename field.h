@@ -30,7 +30,7 @@ public:
 	void drawTriangle(Triangle *triangle);
 	void drawRectangle(Rectangle *rectangle);
 	void drawCircle(Circle *circle);
-	void drawText(Text text);
+	void drawText(Text *text);
 	void drawPixel(Pixel *pixel);
 
 	void drawBinaryHeap(BinaryHeap binaryHeap, int x0, int y0);
@@ -57,4 +57,5 @@ private:
 	std::vector<Triangle *> triangleVector;
 	std::vector<Rectangle *> rectangleVector;
 	std::vector<Circle *> circleVector;
+	std::vector<Text *> textVector;
 };

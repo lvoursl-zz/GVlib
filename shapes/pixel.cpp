@@ -1,6 +1,6 @@
 #include "pixel.h"
 
-Pixel::Pixel(int x0, int y0) : x(x0), y(y0) {
+Pixel::Pixel(int x0, int y0, Colors::Code color) : x(x0), y(y0), color(color) {
 	coordinates = {
 		{ "x0", x0 } ,
 		{ "y0", y0 }
@@ -26,4 +26,12 @@ int Pixel::getY() const {
 
 void Pixel::setY(int y) {
 	this->y = y;
+}
+
+Colors::Code Pixel::getColor() const {
+	return color;
+}
+
+void Pixel::setColor(Colors::Code color) {
+	this->color = color;
 }

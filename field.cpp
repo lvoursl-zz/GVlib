@@ -95,6 +95,10 @@ void Field::refresh() {
  		drawCircle(circleVector[i]);
  	}
 
+ 	for (int i = 0; i < textVector.size(); i++) {
+ 		drawText(textVector[i]);
+ 	}
+
 
 	drawField();
 }
@@ -325,15 +329,28 @@ void Field::drawCircle(Circle *circle) {
 	}
 }
 
-void Field::drawText(Text userText) {
+void Field::drawText(Text *userText) {
 
-	int x0 = userText.getX(); 
-	int y0 = userText.getY();
-	std::string text = userText.getText();
-	Colors::Code color = userText.getColor();
+	int x0 = userText->getX(); 
+	int y0 = userText->getY();
+	std::string text = userText->getText();
+	Colors::Code color = userText->getColor();
 	
 	if ((x0 + text.length() <= width) && (width > x0) && (x0 >= 0) 
 									  && (height > y0) && (y0 >= 0)) {
+
+		
+		bool textInArray = false;
+		for (int i = 0; i < textVector.size(); i++) {
+			if (userText == textVector[i]) {
+				 textInArray = true;
+				 break;
+			}
+		}
+
+		if ( !textInArray ) textVector.push_back(userText);
+
+
 		int textCount = 0;
 		for (int i = x0; i < x0 + text.length(); i++) {
 			data[y0][i] = "\033[" + std::to_string(color) + "m" + text.at(textCount) + "\033[m";
@@ -355,7 +372,7 @@ void Field::drawPixel(Pixel *pixel) {
 
 		if ( !pixelInArray ) pixelVector.push_back(pixel);
 
-		data[pixel->getY()][pixel->getX()] = (char)254;
+		data[pixel->getY()][pixel->getX()] =  "\033[" +std::to_string(pixel->getColor()) + "m" +  "  " + "\033[m";
 	}
 }
 
