@@ -34,13 +34,15 @@ public:
 	void drawPixel(Pixel *pixel);
 
 	void drawBinaryHeap(BinaryHeap binaryHeap, int x0, int y0);
-	void drawArray();
+	void drawVector(std::vector<int> vec, int x0, int y0);
 
 	void deleteShape(Line *line);
 	void deleteShape(Triangle *triangle);
 	void deleteShape(Rectangle *rectangle);
 	void deleteShape(Circle *circle);
 	void deleteShape(Pixel *pixel);
+
+	std::string createIndentForData(int length);
 
 	int getWidth() const; 
 	int getHeight() const;

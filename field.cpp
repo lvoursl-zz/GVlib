@@ -6,7 +6,7 @@ Field::Field(int w, int h) : width(w), height(h) {
 		std::vector<std::string> row(width);
 		data.push_back(row);
 		for (int j = 0; j < width; ++j) {
-			data[i][j] = "0";
+			data[i][j] = "NULL";
 		}		
 	}
 }
@@ -16,7 +16,7 @@ Field::Field() : width(35), height(25) {
 		std::vector<std::string> row(width);
 		data.push_back(row);
 		for (int j = 0; j < width; ++j) {
-			data[i][j] = "0";	
+			data[i][j] = "NULL";	
 		}				
 	}	
 }
@@ -34,7 +34,7 @@ int Field::getHeight() const {
 void Field::clearFieldData() {
 	for (int i = 0; i < height; i++) {
 		for (int j = 0; j < width; j++) {
-			data[i][j] = "0";
+			data[i][j] = "NULL";
 		}
 	}
 }
@@ -50,7 +50,7 @@ void Field::clearFieldData(int x0, int y0, int x1, int y1) {
 
 		for (int x = x0; x <= x1; x++) {			
 			for (int y = y0; y <= y1; y++) {
-				data[y][x] = "0";
+				data[y][x] = "NULL";
 			}
 		}
 	}
@@ -59,7 +59,7 @@ void Field::clearFieldData(int x0, int y0, int x1, int y1) {
 void Field::drawField() {
 	for (int i = 0; i < height; ++i) {
 		for (int j = 0; j < width; ++j) {
-			if (data[i][j] == "0") std::cout << "  ";
+			if (data[i][j] == "NULL") std::cout << "  ";
 				else std::cout << data[i][j] << " ";
 		}
 		std::cout << std::endl;
@@ -412,6 +412,60 @@ void Field::drawBinaryHeap(BinaryHeap binaryHeap, int x0, int y0) {
 			}
 		}
 	}
+}
+
+void Field::drawVector(std::vector<int> vec, int x0, int y0) {
+	if ((width > x0) && (x0 >= 0) && (height > y0) && (y0 >= 0) && 
+		(x0 + vec.size() < width) && (y0 + 2 < height)) { 
+
+		int x = x0;
+		int y = y0;
+		int numberInVector = 0;
+		int length = 0;
+		std::string leftStep = "";
+		std::string rightStep = "";
+
+		for (int i = 0; i < vec.size(); i++) {
+			numberInVector = vec[i];
+			while ( numberInVector != 0 ) {
+				numberInVector /= 10;
+				length++;
+			}
+
+			if (length % 2 == 0) {
+				leftStep = createIndentForData(length / 2);
+				rightStep = createIndentForData((length / 2) - 1);
+			} else {
+				leftStep = createIndentForData(length / 2);
+				rightStep = createIndentForData(length / 2);
+			}
+
+			data[y][x] = leftStep + std::to_string(i) + rightStep;
+			
+			x++;			
+			length = 0;
+		}
+
+		y++;
+		x = x0;
+
+		for (int i = 0; i < vec.size(); i++) {
+			data[y][x] = std::to_string(vec[i]);
+			x++;
+		}
+
+
+	}
+}
+
+std::string Field::createIndentForData(int length) {
+	std::string indentForData = "";
+
+	for (int i = 0; i < length; i++) {
+		indentForData = indentForData + " ";
+	}
+
+	return indentForData;
 }
 
 
