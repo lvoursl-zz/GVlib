@@ -411,6 +411,33 @@ void Field::drawBinaryHeap(BinaryHeap binaryHeap, int x0, int y0) {
 				data[y][x] = std::to_string(binaryHeapData[i]);
 			}
 		}
+
+		/*int stepX = x0;
+		int y = y0;
+		int degree = 0;
+		int leftStep = x0;
+		int step = 0;
+		std::string indent = "";
+
+		for (int i = 1; i < binaryHeapData.size(); i++) {
+			if (i < pow(2, degree)) { 								
+				indent = createIndentForData(step);
+				data[y][stepX] = indent + std::to_string(binaryHeapData[i]);				
+			} else if (i == 1) {
+				degree++;
+				data[y][stepX] = std::to_string(binaryHeapData[i]);				
+			} else if (i == pow(2, degree)) {				
+				y += 1;				
+				degree++;					
+				step = pow(2, (h - degree + 1));
+				
+				leftStep -= (step / 2);				
+				stepX = leftStep;
+				data[y][stepX] = std::to_string(binaryHeapData[i]) ;
+			}
+			indent = "";
+			stepX++;
+		}*/
 	}
 }
 
